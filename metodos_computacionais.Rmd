@@ -1,0 +1,218 @@
+---
+title: Comparação do estimador de máxima verossimilhança e estimador de máxima verossimilhança corrigido por bootstrap na Distribuição Gompertz
+
+# use letras para afiliacao
+author:
+  - name: Ivonaldo Silvestre
+    affiliation: a,b
+  - name: Fabrício Emiliano
+    affiliation: a,b
+  - name: Alessandro Pereira
+    affiliation: a,b
+  - name: Leonardo Barros
+    affiliation: a,b  
+address:
+  - code: a
+    address: Departamento de Estatística - UFRN
+  - code: b
+    address: Aluno
+
+# area do conhecimento (pelo menos uma)
+subject:
+  - "Métodos Computacionais em Estatística"
+
+# palavras-chave
+keywords:
+  - Distribuição Gompertz
+  - máxima verossimilhança
+  - bootstrap
+
+# resumo - note a barra vertical e os dois espaços no início do parágrafo
+abstract: |
+  O objetivo desse trabalho é avaliar, em termos de viés e erro quadrático médio, o estimador de máxima verossimilhança e o estimador de máxima verossimilhança corrigido por bootstrap, dos parâmetros a e b da Distribuição Gompertz. 
+
+# arquivo com a bibliografia do relatorio
+bibliography: modeloLEA.bib
+
+header-includes:
+   - \usepackage{bm}
+   
+output: 
+  bookdown::pdf_book:
+    base_format: modeloLEA::modeloLEA
+---
+
+
+```{r definicoes, include=FALSE, message=FALSE}
+# pacotes a serem carregados para a analise
+require(flexsurv)
+# definicoes globais 
+# tamanho das figuras: largura=5, altura=4 (polegadas)
+knitr::opts_chunk$set(fig.width=5, fig.height=4, 
+# exibir o codigo do R nos chunks (mudar para FALSE na versao final)
+                      echo=TRUE,
+# mandar o latex manter a figura na posicao correta
+                      fig.pos='h')
+```
+
+
+
+# Introdução
+
+A distribuição Gompertz foi descoberta em [...]
+
+A sua densidade é dada por
+
+$$ f(x;a,b) = be^{ax}exp[-b/a(e^{ax}-1)],\ x>0, $$
+em que $a > 0$ representa o parâmetro de forma e $b>0$ representa o parâmetro de escala. Sua distribuição acumulada é dada por
+
+$$ F(x;a,b) = 1 - exp[-b/a(e^{ax}-1)],\ x>0.$$
+Ao selecionar uma amostra aleatória de tamanho $n,$ podemos encontrar a função de verossimilhança é dada pela forma
+
+$$L(a,b;\bm{x}) = b^nexp\left(a\sum_{i=1}^nx_i\right) exp\left[-\frac{b}{a}\left(\sum_{i=1}^ne^{ax_i}-n\right)\right],$$
+logo, a função log-verossimilhança é da forma
+
+$$ l(a,b;\bm{x}) = n\ log (b) + a\sum_{i=1}^nx_i - \frac{b}{a}\left(\sum_{i=1}^ne^{ax_i}-n\right).$$
+O vetor escore $\bm{U}(a,b;\bm{x}) = (U_a(a,b;\bm{x}),\ U(a,b;\bm{x}))^\top$ são dadas respectivamente por
+
+\begin{align*}
+U_a(a,b;\bm{x}) &= \sum_{i=1}^nx_i + \frac{b}{a^2}\left(\sum_{i=1}^n \left[e^{ax_i}(1-ax_i)\right]-n \right)
+\\
+U_b(a,b;\bm{x}) &= \frac{n}{b}-\frac{1}{a}\left(\sum_{i=1}^ne^{ax_i}-n\right).
+\end{align*}
+A solução dada por $\hat a$ e $\hat b$ quando $\bm{U}(a,b;\bm{x}) = 0$ não pode ser resolvida analiticamente, sendo necessários métodos computacionais para a resolução simultânea do vetor. A matriz de informação de Fisher com os dados observados é uma matriz simétrica $2\times 2,$ da forma
+$$I_0(\hat a,\hat b) = \left[
+\begin{array}{cc}
+A & B  \\
+B & C
+\end{array}
+\right],
+$$
+
+sendo
+
+\begin{align*}
+A & = \frac{\hat b}{\hat a^3} \left\{2\sum_{i=1}^n \left[e^{\hat a x_i}(1-\hat a x_i)-1\right] -\hat a \sum_{i=1}^n \left[e^{\hat a x_i}x_i[(1-\hat a x_i)^2-1]\right]  \right\}\\
+B & = - \frac{1}{\hat a^2} \sum_{i=1}^n \left[e^{\hat a x_i} (1-\hat a x_i)-1 \right]\\
+C & = \frac{n}{\hat b^2}.
+\end{align*}
+
+Logo, a inversa da matriz de informação de Fisher é 
+
+$$I_0^{-1}=\frac{1}{AC-B^2}\left[
+\begin{array}{cc}
+C & -B  \\
+-B & A
+\end{array}
+\right].$$
+
+Assintoticamente, o vetor $(\hat a, \hat b)^\top$ segue uma distribuição normal de parâmetros
+
+$$\left(\begin{array}{c}
+\hat a \\
+\hat b
+\end{array}\right) \sim N\left( \left(\begin{array}{c}
+a \\
+b
+\end{array}\right), I_0^{-1} \right).$$
+
+Portanto, para construir um intervalo com $100(1-\alpha)\%$ de confiança para $a$ e $b,$ usa-se as seguintes fórmulas
+
+\begin{align*}
+IC[a;100(1-\alpha)\%] &= \left[\hat a - Z_{\alpha/2}\sqrt{\frac{C}{AC-B^2}};\hat a + Z_{1-\alpha/2}\sqrt{\frac{C}{AC-B^2}} \right]\\
+IC[b;100(1-\alpha)\%] &= \left[\hat b - Z_{\alpha/2}\sqrt{\frac{A}{AC-B^2}};\hat b + Z_{1-\alpha/2}\sqrt{\frac{A}{AC-B^2}} \right],
+\end{align*}
+
+em que $Z_q$ representa o quantil da distribuição normal padrão com probabilidade acumulada $q$.
+
+
+
+# Discussão
+
+  Primeiramente, vamos usar o Método da Transformação inversa para gerar números pseudos-aleatórios que seguem a distribuição Gompertz.
+
+```{r geração}
+
+rgomp=function(n,a,b){
+  u=runif(n)
+  log(1 -a/b*log(1-u))/a #Inversa da função de distribuição acumulada
+}
+
+pfun1 <- function(x,a,b){
+  f <- (b*(exp(1)^(a*x)))*exp((-b/a)*((exp(1)^(a*x))-1)) #Densidade
+  return(f)
+}
+
+
+
+n=5000
+a=1
+b=1
+dados=rgomp(n,a,b)
+dados2=rgompertz(n,a,b)
+x <- seq(0, max(dados), 0.01)
+
+```
+  Comparação entre os n números pseudos-aleatórios gerados, usando o métodos da transformada inversa e n números gerados obtidos a partir da função de densidade de probabilidade da distribuição Gompertz.
+  
+```{r comparação}  
+
+par(mfrow=c(1,2))
+
+#Histograma dos dados gerados.
+hist(dados2,freq = FALSE,main="",xlab="x",ylab="Density-fun",lwd=2)
+lines(x,pfun1(x,a,b),lty=1,lwd=2)
+box()
+
+#Histograma dos dados obtidos pela função densidade.
+hist(dados,freq = FALSE,main="",xlab="x",ylab="Density-uni",lwd=2)
+lines(x,pfun1(x,a,b),lty=1,lwd=2)
+box()
+```
+  Agora vamos dar um chute inicial, afim de utiliza-lo no método de estimadção de máxima verossimilhança.
+
+```{r chute}
+
+#Log da função de verossimilhança
+logdgomp=function(x,dados){
+  a=x[1]
+  b=x[2]
+  -sum(log(b)+a*dados-b/a*(exp(a*dados)-1))
+}
+
+
+achute=1 #Chute inicial para o parâmetro a
+bchute=1 #Chute inicial para o parâmetro b
+(chute=c(achute,bchute))
+```
+  Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros.
+```{r estimativas}
+#Estimador de máxima verossimilhança 
+estimativas=optim(par=chute,fn=logdgomp,dados=dados)$par
+(ahat=estimativas[1]) #Estimador pontual para a
+(bhat=estimativas[2]) #Estimador pontual para b
+```
+
+  Com os estimadores dos parâmetros obtidos, é possível criar os intervalos 95% de cofiança  para a e para b. 
+```{r IC}
+C=n/bhat^2
+B=-sum(exp(ahat*dados)*(1-ahat*dados)-1)/ahat^2
+A=bhat/ahat^3*(2*(sum(exp(ahat*dados)*(1-ahat*dados))-1) -
+           ahat*sum(exp(ahat*dados)*dados*((1-ahat*dados)^2-1))
+         )
+varahat=C/(A*C-B^2)
+varbhat=A/(A*C-B^2)
+covabhat=-B/(A*C-B^2)
+(ICa=ahat+c(-1,1)*1.96*sqrt(varahat))#Intervalo de confiança para a
+(ICb=bhat+c(-1,1)*1.96*sqrt(varbhat))#Intervalo de confiança para b
+```
+
+```{r informacoes}
+# usando n = 25, 50, 100 e 200
+# R=5000
+# B=500
+# 2 configuracoes de parametros
+```
+
+
+# Códigos utilizados
