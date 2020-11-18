@@ -69,8 +69,8 @@ dados=rgomp(n,a,b)
 set.seed(10241226)
 
 # Monte Carlo
-foreach(i=1:500) %do%{
-  
+foreach(i=1:R) %do%{
+ Z = rgomp(n,a,b)
 }
 
 stopCluster(cl)
