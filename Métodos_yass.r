@@ -68,7 +68,10 @@ b = 3
 dados=rgomp(n,a,b)
 set.seed(10241226)
 
-foreach()
+# Monte Carlo
+foreach(i=1:500) %do%{
+  
+}
 
 stopCluster(cl)
 
