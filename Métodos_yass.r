@@ -84,13 +84,13 @@ covabhat=-B/(A*C-B^2)
 
 
 #Parâmetros 
-n = 200
+n = 25
 R = 5000
 B = 500
 a = 2
 b = 3
-achute=1 #Chute inicial para o parâmetro a
-bchute=1 #Chute inicial para o parâmetro b
+achute=2 #Chute inicial para o parâmetro a
+bchute=3 #Chute inicial para o parâmetro b
 chute=c(achute,bchute)
 set.seed(1024122)
 
@@ -107,15 +107,15 @@ registerDoParallel(cl)
 
 
 foreach(k=1:R) %do%{
- Z = rgomp(n,a,b)
- 
- # Utilizando o método numérico "BFGS" para estimar os parâmtros a e b da distribuição gompertz pelo método da máxima verossimilhança
- estimados_MV <- optim(par=chute, method="BFGS", fn = logdgomp, dados=Z)
- 
- 
- ahat_MV[k] <- estimados_MV$par[1]
- bhat_MV[k]      <- estimados_MV$par[2]
-
+  Z = rgomp(n,a,b)
+  
+  # Utilizando o método numérico "BFGS" para estimar os parâmtros a e b da distribuição gompertz pelo método da máxima verossimilhança
+  estimados_MV <- optim(par=chute, method="BFGS", fn = logdgomp, dados=Z)
+  
+  
+  ahat_MV[k] <- estimados_MV$par[1]
+  bhat_MV[k]      <- estimados_MV$par[2]
+  
 }
 
 #Fechando a alocação de clusteres
@@ -142,8 +142,14 @@ EQM_b <- vies_bhat^2 + var(bhat_MV)
 EQM_a
 EQM_b 
 
+# IC 95%
+
+LimInf_a_MV = quantile(ahat_MV,0.025)
+LimSup_a_MV = quantile(ahat_MV,0.975)
 
 
+LimInf_b_MV = quantile(bhat_MV,0.025)
+LimSup_b_MV = quantile(bhat_MV,0.975)
 
 #_________________________________________________________________________________
 #
@@ -158,6 +164,10 @@ ahat_MV_boot<-NA
 bhat_MV_boot<-NA
 ahat_boot<-rep(NA,B)
 bhat_boot<-rep(NA,B)
+Z = rgomp(n,a,b)
+estimados_MV <- optim(par=chute, method="BFGS", fn = logdgomp, dados=Z)
+ahat_MV_boot <- estimados_MV$par[1]
+bhat_MV_boot <- estimados_MV$par[2]
 
 
 #Alocação de clusteres para otimizar os laços do monte carlo e bootstrap
@@ -166,26 +176,17 @@ cl <- makeCluster(no_cores)
 registerDoParallel(cl)  
 
 
-foreach(k=1:R) %do%{
-  Z = rgomp(n,a,b)
   
   # Utilizando o método numérico "BFGS" para estimar os parâmtros a e b da distribuição gompertz pelo método da máxima verossimilhança
-  estimados_MV <- optim(par=chute, method="BFGS", fn = logdgomp, dados=Z)
-  
-  
-  ahat_MV_boot <- estimados_MV$par[1]
-  bhat_MV_boot <- estimados_MV$par[2]
-  
+
   # Criando o algoritmo do bootstrap paramétrico
-    foreach(i=1:B) %do% {
-        Z_boot = rgomp(n,ahat_MV_boot,bhat_MV_boot)
-        estimados_boot <- optim(par=c(ahat_MV_boot,bhat_MV_boot), method="BFGS", fn = logdgomp, dados=Z_boot)
-        
-        ahat_boot[i] <- estimados_boot$par[1]
-        bhat_boot[i] <- estimados_boot$par[2]
-    } 
-     
-}
+  foreach(i=1:B) %do% {
+    Z_boot = rgomp(n,ahat_MV_boot,bhat_MV_boot)
+    estimados_boot <- optim(par=c(ahat_MV_boot,bhat_MV_boot), method="BFGS", fn = logdgomp, dados=Z_boot)
+    
+    ahat_boot[i] <- estimados_boot$par[1]
+    bhat_boot[i] <- estimados_boot$par[2]
+  } 
 
 #Fechando a alocação de clusteres
 stopCluster(cl)
@@ -204,6 +205,11 @@ vies_bhat_boot <- mean(bhat_boot) - b
 vies_ahat_boot
 vies_bhat_boot 
 
+a_corrigido <- 2*ahat_MV_boot - estimate_a_boot
+b_corrigido <- 2*bhat_MV_boot - estimate_b_boot
+
+a_corrigido
+b_corrigido
 
 EQM_a_boot <- vies_ahat^2 + var(ahat_boot)
 EQM_b_boot <- vies_bhat^2 + var(bhat_boot)
@@ -211,12 +217,21 @@ EQM_b_boot <- vies_bhat^2 + var(bhat_boot)
 EQM_a_boot
 EQM_b_boot 
 
+# IC 95%
+
+LimInf_a_boot = quantile(ahat_boot,0.025)
+LimSup_a_boot = quantile(ahat_boot,0.975) 
+
+LimInf_b_boot = quantile(bhat_boot,0.025)
+LimSup_b_boot = quantile(bhat_boot,0.975) 
+
+
 #_________//_________//_________//_________//_________//_________//_________//____
 
 
 # Criando tabela que apresenta os resultados:
 
-Método<-rep(c("Máxima Verossimilhança","Bootstrap"),each=2)
+Método<-rep(c("Máxima Verossimilhança","Bootstrap","Corrigido"),each=2)
 
 # Monte carlo
 Estimativa_mv<-as.matrix(c(estimate_a,estimate_b))
@@ -233,11 +248,23 @@ Vies_boot<-as.matrix(c(vies_ahat_boot,vies_bhat_boot))
 
 EQM_boot<-as.matrix(c(EQM_a_boot,EQM_b_boot))
 
-# Criando a tabela
-Parâmetro<-rep(c("a","b"),times=2)
+# Corrigido
 
-Estimativa=rbind(Estimativa_mv,Estimativa_boot)
-Vies<-rbind(Vies_MV,Vies_boot)
-EQM<-rbind(EQM_MV,EQM_boot)
-n=rep(n,4)
-tabela<-data.frame(n,Método,Parâmetro,Estimativa,Vies,EQM)
+Estimativa_cor <- as.matrix(c(a_corrigido,b_corrigido))
+
+Vies_cor <- as.matrix(c(a_corrigido-a,b_corrigido-b))
+
+EQM_Corrigido <- as.matrix(c(NA,NA))
+
+# Criando a tabela
+Parâmetro<-rep(c("a","b"),times=3)
+
+Estimativa=rbind(Estimativa_mv,Estimativa_boot,Estimativa_cor)
+Vies<-rbind(Vies_MV,Vies_boot,Vies_cor)
+EQM<-rbind(EQM_MV,EQM_boot,EQM_Corrigido)
+ICinf=rbind(LimInf_a_MV,LimInf_b_MV,LimInf_a_boot,LimInf_b_boot,NA,NA)
+ICsup=rbind(LimSup_a_MV,LimSup_b_MV,LimSup_a_boot,LimSup_b_boot,NA,NA)
+nrep=rep(n,6)
+tabela<-data.frame(nrep,Método,Parâmetro,Estimativa,Vies,EQM,ICinf,ICsup)
+row.names(tabela)=1:6
+tabela
