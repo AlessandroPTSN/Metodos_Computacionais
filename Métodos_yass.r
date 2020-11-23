@@ -2,7 +2,7 @@
 #Pacotes utilizados:
 require(flexsurv)
 library(doParallel)
-
+#rm(list=ls()) #AVISO, VAI LIMPAR TODAS AS VARIAVEIS SALVAS
 ##################################################################################
 
 #                           Funções usadas no script
@@ -268,3 +268,11 @@ nrep=rep(n,6)
 tabela<-data.frame(nrep,Método,Parâmetro,Estimativa,Vies,EQM,ICinf,ICsup)
 row.names(tabela)=1:6
 tabela
+
+
+
+
+# Save/Load
+save.image(file = "yass.RData")#Salvando a img do R
+#rm(list=ls()) #AVISO, VAI LIMPAR TODAS AS VARIAVEIS SALVAS
+load("yass.RData")#Carregando a img do R
