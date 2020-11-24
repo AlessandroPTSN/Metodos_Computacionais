@@ -273,6 +273,15 @@ tabela
 
 
 # Save/Load
-save.image(file = "yass.RData")#Salvando a img do R
+save.image(file = "Ivo.RData")#Salvando a img do R
 #rm(list=ls()) #AVISO, VAI LIMPAR TODAS AS VARIAVEIS SALVAS
-load("yass.RData")#Carregando a img do R
+
+#Carregando todas as tabelas já criadas
+load("Ivo.RData")#Carregando a img do R
+tabela25<-tabela
+load("leo.RData")#Carregando a img do R
+tabela50<-tabela
+load("Fabricio.RData")#Carregando a img do R
+tabela100<-tabela
+load("Alessandro.RData")#Carregando a img do R
+tabela200<-tabela
