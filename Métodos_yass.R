@@ -88,11 +88,11 @@ R = 5000
 B = 500
 a = 2
 b = 3
-achute=2 #Chute inicial para o parâmetro a
-bchute=3 #Chute inicial para o parâmetro b
-chute=c(achute,bchute)
+chute=c(a,b)
 set.seed(1024122)
-
+#Como estamos utilizando achute = a = 2 e bchute = b = 3 então eu coloquei que chute = c(a,b) só para facilitar nas alterações
+#achute=2 #Chute inicial para o parâmetro a
+#bchute=3 #Chute inicial para o parâmetro b
 
 #Alocação de memória
 ahat_MV<-rep(NA,R)
@@ -115,6 +115,8 @@ foreach(k=1:R)%do%{
   estimados_MV <- optim(par=chute, method="BFGS", fn = logdgomp, dados=Z)
   ahat_MV[k] <- estimados_MV$par[1]
   bhat_MV[k]      <- estimados_MV$par[2]
+  
+  
   foreach(i=1:B)%do%{
     Z_boot = rgomp(n,ahat_MV[k],bhat_MV[k])
     estimados_boot <- optim(par=c(ahat_MV[k],bhat_MV[k]), method="BFGS", fn = logdgomp, dados=Z_boot)
@@ -122,8 +124,11 @@ foreach(k=1:R)%do%{
     ahat_boot[k,i] <- estimados_boot$par[1]
     bhat_boot[k,i] <- estimados_boot$par[2]
   }
+  
   ahat_MV_boot[k] <- mean(ahat_boot[k,],na.rm=T)
   bhat_MV_boot[k] <- mean(bhat_boot[k,],na.rm=T)
+  
+  print(paste0(round(((R)/5000)*100,1),"% concluído"))
 }
 
 #Fechando a alocação de clusteres
