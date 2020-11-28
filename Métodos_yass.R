@@ -103,7 +103,7 @@ ahat_MV_boot<-rep(NA,R)
 bhat_MV_boot<-rep(NA,R)
 
 #Alocação de clusteres para otimizar os laços do monte carlo e bootstrap
-no_cores <- detectCores()-1
+no_cores <- detectCores()-2
 cl <- makeCluster(no_cores)  
 registerDoParallel(cl)  
 
@@ -128,7 +128,7 @@ foreach(k=1:R)%do%{
   ahat_MV_boot[k] <- mean(ahat_boot[k,],na.rm=T)
   bhat_MV_boot[k] <- mean(bhat_boot[k,],na.rm=T)
   
-  print(paste0(round(((R)/5000)*100,1),"% concluído"))
+  print(paste0(round(((k)/5000)*100,1),"% concluído"))
 }
 
 #Fechando a alocação de clusteres
