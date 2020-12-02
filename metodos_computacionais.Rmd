@@ -59,7 +59,7 @@ knitr::opts_chunk$set(fig.width=5, fig.height=4,
 
 # Introdução
 
-A distribuição Gompertz foi descoberta em 1825, por Benjamin Gompertz e "é um dos modelos matemáticos clássicos que representam a função de sobrevivência com base nas leis da mortalidade. Essa distribuição desempenha um papel importante na modelagem da mortalidade humana e no ajuste das tabelas atuariais." (A. El-Gohary et al., 2013, p.2, tradução nossa). Além disso, a distribuição Gompertz pode ser aplicada em diversas areas de conhecimento, como "(Gottwald et al. (1998) aplicaram o modelo de Gompertz para avaliar a ocorrência do vírus causador da "tristeza dos citros" na Costa Rica e República Dominicana. Marin et al. (1998) usaram essa função para modelar o crescimento dos fungos Aspergillus e Penicillium em milho." (PEREIRA, 2002, p.12). 
+A distribuição Gompertz foi descoberta em 1825, por Benjamin Gompertz e "é um dos modelos matemáticos clássicos que representam a função de sobrevivência com base nas leis da mortalidade. Essa distribuição desempenha um papel importante na modelagem da mortalidade humana e no ajuste das tabelas atuariais." (A. El-Gohary et al., 2013, p.2, tradução nossa). Além disso, a distribuição Gompertz pode ser aplicada em diversas areas de conhecimento, como "(Gottwald et al. (1998) aplicaram o modelo de Gompertz para avaliar a ocorrência do vírus causador da "tristeza dos citros" na Costa Rica e República Dominicana. Marin et al. (1998) usaram essa função para modelar o crescimento dos fungos Aspergillus e Penicillium em milho." (Guimarães, 2002, p.12). 
 
 A sua densidade é dada por
 
@@ -217,6 +217,6 @@ covabhat=-B/(A*C-B^2)
 # Referências
 
 A. El-Gohary et al., Applied Mathematical Modelling. 37. ed. Saudi Arabia: Elsevier, 2013.
-PEREIRA, Uma Função Hiperbólica de Distribuição Probabilística de Alta Flexibilidade. 1. ed. Planaltina: Embrapa, 2002.
+Guimarães, Uma Função Hiperbólica de Distribuição Probabilística de Alta Flexibilidade. 1. ed. Planaltina: Embrapa, 2002.
 
 # Códigos utilizados
