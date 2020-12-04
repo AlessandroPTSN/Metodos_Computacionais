@@ -129,6 +129,10 @@ em que $Z_q$ representa o quantil da distribuição normal padrão com probabili
 Falar sobre monte carlo e bootstrap.
 
 
+
+A estimação dos parâmetros é um dos pontos fundamentais para o ajuste de um modelo. E neste trabalho vamos mostrar dois métodos diferentes de estimação dos parâmetros, o método do estimador de máxima verossimilhança e o estimador por monte carlo corrigido por bootstrap. É importante ressaltar que vamos estimar dois pares de valores diferentes dos parâmetros a e b, primeiramente vamos estimar $a=2$ e $b=3$, e também vamos estimar $a=0.5$ e $b=0.5$. Assim como iremos avaliar os estimadores para diferentes números de amostras, neste trabalho serão utilizados $n = 25,\ 50,\ 100$ e $200$.) Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros pelo método de máxima verossimilhança.
+
+
 # Resultados
 
   Primeiramente, vamos usar o Método da Transformação inversa para gerar números pseudos-aleatórios que seguem a distribuição Gompertz. A Figura \ref{fig:comp} Comparando os n números pseudos-aleatórios gerados, usando o métodos da transformada inversa e n números gerados obtidos a partir da função de densidade de probabilidade da distribuição Gompertz a partir do pacote *flexsurv*.
@@ -186,7 +190,6 @@ bchute=1 #Chute inicial para o parâmetro b
 
 ## Estimação dos parâmetros
 
-(A estimação dos parâmetros é um dos pontos fundamentais para o ajuste de um modelo. E neste trabalho vamos mostrar dois métodos diferentes de estimação dos parâmetros, o método do estimador de máxima verossimilhança e o estimador por monte carlo corrigido por bootstrap. É importante ressaltar que vamos estimar dois pares de valores diferentes dos parâmetros a e b, primeiramente vamos estimar $a=2$ e $b=3$, e também vamos estimar $a=0.5$ e $b=0.5$. Assim como iremos avaliar os estimadores para diferentes números de amostras, neste trabalho serão utilizados $n = 25, 50, 100 e 200$.) Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros pelo método de máxima verossimilhança.
 
 tabelas
 ```{r tabelas}
