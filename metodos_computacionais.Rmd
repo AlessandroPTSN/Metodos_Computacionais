@@ -156,9 +156,7 @@ dados2=rgompertz(n,a,b)
 x <- seq(0, max(dados), 0.01)
 
 ```
-```{r comparação,fig.caption="\label{fig:comp}Comparação entre os números pseudo aleatórios gerados...."}  
-
-par(mfrow=c(1,2))
+```{r comparacao,figures-side, fig.show="hold", out.width="50%",fig.caption="\\label{fig:comp}Comparação entre os números pseudo aleatórios gerados"}  
 
 #Histograma dos dados gerados.
 hist(dados2,freq = FALSE,main="",xlab="x",ylab="Density-fun",lwd=2)
@@ -191,6 +189,27 @@ bchute=1 #Chute inicial para o parâmetro b
 (A estimação dos parâmetros é um dos pontos fundamentais para o ajuste de um modelo. E neste trabalho vamos mostrar dois métodos diferentes de estimação dos parâmetros, o método do estimador de máxima verossimilhança e o estimador por monte carlo corrigido por bootstrap. É importante ressaltar que vamos estimar dois pares de valores diferentes dos parâmetros a e b, primeiramente vamos estimar $a=2$ e $b=3$, e também vamos estimar $a=0.5$ e $b=0.5$. Assim como iremos avaliar os estimadores para diferentes números de amostras, neste trabalho serão utilizados $n = 25, 50, 100 e 200$.) Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros pelo método de máxima verossimilhança.
 
 tabelas
+```{r tabelas}
+tabela25=read.csv2("Tabela25.csv")
+tabela50=read.csv2("Tabela50.csv")
+tabela100=read.csv2("Tabela100.csv")
+tabela200=read.csv2("Tabela200.csv")
+a2b3=rbind(tabela25[1:4,],tabela50[1:4,],tabela100[1:4,],tabela200[1:4,])
+a2b3=a2b3[order(a2b3$`Parâmetro`),]
+a2b3=a2b3[,c(1,5:8)]
+a2b3=cbind(a2b3[1:8,],a2b3[9:16,])
+a2b3=a2b3[,-6]
+a2b3
+a5b5=rbind(tabela25[-c(1:4),],tabela50[-c(1:4),],
+           tabela100[-c(1:4),],tabela200[-c(1:4),])
+a5b5=a5b5[order(a5b5$`Parâmetro`),]
+a5b5=a5b5[,c(1,5:8)]
+a5b5=cbind(a5b5[1:8,],a5b5[9:16,])
+a5b5=a5b5[,-6]
+a5b5
+library(xtable)
+xtable(a5b5,digits=4)
+```
 
 Comentar as tabelas
   
