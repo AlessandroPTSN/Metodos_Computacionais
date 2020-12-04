@@ -225,6 +225,8 @@ covabhat=-B/(A*C-B^2)
 # B=500
 # 2 configuracoes de parametros
 ```
+# Conclusão
+
 
 # Referências
 
