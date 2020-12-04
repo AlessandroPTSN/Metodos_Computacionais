@@ -239,6 +239,7 @@ covabhat=-B/(A*C-B^2)
 # Referências
 
 A. El-Gohary et al., Applied Mathematical Modelling. 37. ed. Saudi Arabia: Elsevier, 2013.
+
 Guimarães, Uma Função Hiperbólica de Distribuição Probabilística de Alta Flexibilidade. 1. ed. Planaltina: Embrapa, 2002.
 
 # Códigos utilizados
