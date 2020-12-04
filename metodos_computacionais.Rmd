@@ -59,7 +59,7 @@ knitr::opts_chunk$set(fig.width=5, fig.height=4,
 
 # Introdução
 
-Benjamin Gompertz foi um matemático judeu, que comprovou que a taxa de mortalidade cresce geometricamente e em 1825, no estudo __On the Nature of the Function Expressive of the Law of Human Mortality, and on a New Mode of Determining the Value of Life Contingencies__, ele apresentou uma lei que descrevia o crescimento geométrico da taxa de mortalidade -e "é um dos modelos matemáticos clássicos que representam a função de sobrevivência com base nas leis da mortalidade. Essa distribuição desempenha um papel importante na modelagem da mortalidade humana e no ajuste das tabelas atuariais." (A. El-Gohary et al., 2013, p.2, tradução nossa). Além disso, a distribuição Gompertz pode ser aplicada em diversas areas de conhecimento, como "(Gottwald et al. (1998) aplicaram o modelo de Gompertz para avaliar a ocorrência do vírus causador da "tristeza dos citros" na Costa Rica e República Dominicana. Marin et al. (1998) usaram essa função para modelar o crescimento dos fungos Aspergillus e Penicillium em milho." (Guimarães, 2002, p.12). 
+Benjamin Gompertz foi um matemático judeu, que comprovou que a taxa de mortalidade cresce geometricamente e em 1825, no estudo __*On the Nature of the Function Expressive of the Law of Human Mortality, and on a New Mode of Determining the Value of Life Contingencies*__, ele apresentou uma lei que descrevia o crescimento geométrico da taxa de mortalidade e "é um dos modelos matemáticos clássicos que representam a função de sobrevivência com base nas leis da mortalidade. Essa distribuição desempenha um papel importante na modelagem da mortalidade humana e no ajuste das tabelas atuariais." (A. El-Gohary et al., 2013, p.2, tradução nossa). Além disso, a distribuição Gompertz pode ser aplicada em diversas areas de conhecimento, como "(Gottwald et al. (1998) aplicaram o modelo de Gompertz para avaliar a ocorrência do vírus causador da "tristeza dos citros" na Costa Rica e República Dominicana. Marin et al. (1998) usaram essa função para modelar o crescimento dos fungos Aspergillus e Penicillium em milho." (Guimarães, 2002, p.12). 
 
 # Definições Básicas 
 
@@ -187,7 +187,15 @@ achute=1 #Chute inicial para o parâmetro a
 bchute=1 #Chute inicial para o parâmetro b
 (chute=c(achute,bchute))
 ```
-  Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros.
+
+# Estimação dos parâmetros
+
+(A estimação dos parâmetros é um dos pontos fundamentais para o ajuste de um modelo. E neste trabalho vamos mostrar dois métodos diferentes de estimação dos parâmetros, o método do estimador de máxima verossimilhança e o estimador por monte carlo corrigido por bootstrap. É importante ressaltar que vamos estimar dois pares de valores diferentes dos parâmetros a e b, primeiramente vamos estimar $a=2$ e $b=3$, e também vamos estimar $a=0.5$ e $b=0.5$. Assim como iremos avaliar os estimadores para diferentes números de amostras, neste trabalho serão utilizados $n = 25, 50, 100 e 200$.)
+
+
+# Máxima Verossimilhança
+
+  Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros pelo método de máxima verossimilhança.
 ```{r estimativas}
 #Estimador de máxima verossimilhança 
 estimativas=optim(par=chute,fn=logdgomp,dados=dados)$par
@@ -209,6 +217,18 @@ covabhat=-B/(A*C-B^2)
 (ICb=bhat+c(-1,1)*1.96*sqrt(varbhat))#Intervalo de confiança para b
 ```
 
+  Cálculo da variância e do intervalo de confiança para os estimadores da distribuição gompertz a partir dos dados que foram gerados.
+```{r var}
+varahat=C/(A*C-B^2)
+varbhat=A/(A*C-B^2)
+covabhat=-B/(A*C-B^2)
+(ICa=ahat+c(-1,1)*1.96*sqrt(varahat))#Intervalo de confiança para a
+(ICb=bhat+c(-1,1)*1.96*sqrt(varbhat))
+```
+
+
+# Monte carlo corrigido
+  Neste momento, nós utilizamos alocações de clusteres para otimizar os laços do monte carlo e bootstrap, (além de usarmos a função foreach no lugar da função básica for do *R*)
 ```{r informacoes}
 # usando n = 25, 50, 100 e 200
 # R=5000
