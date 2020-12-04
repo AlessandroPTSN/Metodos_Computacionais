@@ -59,9 +59,11 @@ knitr::opts_chunk$set(fig.width=5, fig.height=4,
 
 # Introdução
 
-A distribuição Gompertz foi descoberta em 1825, por Benjamin Gompertz e "é um dos modelos matemáticos clássicos que representam a função de sobrevivência com base nas leis da mortalidade. Essa distribuição desempenha um papel importante na modelagem da mortalidade humana e no ajuste das tabelas atuariais." (A. El-Gohary et al., 2013, p.2, tradução nossa). Além disso, a distribuição Gompertz pode ser aplicada em diversas areas de conhecimento, como "(Gottwald et al. (1998) aplicaram o modelo de Gompertz para avaliar a ocorrência do vírus causador da "tristeza dos citros" na Costa Rica e República Dominicana. Marin et al. (1998) usaram essa função para modelar o crescimento dos fungos Aspergillus e Penicillium em milho." (Guimarães, 2002, p.12). 
+Benjamin Gompertz foi um matemático judeu, que comprovou que a taxa de mortalidade cresce geometricamente e em 1825, no estudo __On the Nature of the Function Expressive of the Law of Human Mortality, and on a New Mode of Determining the Value of Life Contingencies__, ele apresentou uma lei que descrevia o crescimento geométrico da taxa de mortalidade -e "é um dos modelos matemáticos clássicos que representam a função de sobrevivência com base nas leis da mortalidade. Essa distribuição desempenha um papel importante na modelagem da mortalidade humana e no ajuste das tabelas atuariais." (A. El-Gohary et al., 2013, p.2, tradução nossa). Além disso, a distribuição Gompertz pode ser aplicada em diversas areas de conhecimento, como "(Gottwald et al. (1998) aplicaram o modelo de Gompertz para avaliar a ocorrência do vírus causador da "tristeza dos citros" na Costa Rica e República Dominicana. Marin et al. (1998) usaram essa função para modelar o crescimento dos fungos Aspergillus e Penicillium em milho." (Guimarães, 2002, p.12). 
 
-A sua densidade é dada por
+# Definições Básicas 
+
+A sua função de densidade de probabilidade é dada por
 
 $$ f(x;a,b) = be^{ax}exp[-b/a(e^{ax}-1)],\ x>0, $$
 em que $a > 0$ representa o parâmetro de forma e $b>0$ representa o parâmetro de escala. Sua distribuição acumulada é dada por
