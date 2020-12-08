@@ -135,6 +135,10 @@ IC[b;100(1-\alpha)\%] &= \left[\hat b - Z_{\alpha/2}\sqrt{\frac{A}{AC-B^2}};\hat
 
 em que $Z_q$ representa o quantil da distribuição normal padrão com probabilidade acumulada $q$.
 
+## Método *Bootstrap*
+
+
+
 # Resultados
 
   Primeiramente, vamos usar o Método da Transformação inversa para gerar números pseudos-aleatórios que seguem a distribuição Gompertz. A Figura \ref{fig:comp} comparando os n números pseudos-aleatórios gerados usando o métodos da transformada inversa e n números gerados obtidos a partir da função de densidade de probabilidade da distribuição Gompertz a partir do pacote *flexsurv*.
