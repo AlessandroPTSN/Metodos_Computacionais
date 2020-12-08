@@ -66,7 +66,11 @@ Benjamin Gompertz foi um matemático judeu, que comprovou que a taxa de mortalid
 
 # Metodologia
 
-A sua função de densidade de probabilidade é dada por
+A estimação dos parâmetros é um dos pontos fundamentais para o ajuste de um modelo. E neste trabalho vamos mostrar dois métodos diferentes de estimação dos parâmetros, o método do estimador de máxima verossimilhança e o estimador por monte carlo corrigido por bootstrap. É importante ressaltar que vamos estimar dois pares de valores diferentes dos parâmetros a e b, primeiramente vamos estimar $a=2$ e $b=3$, e também vamos estimar $a=0.5$ e $b=0.5$. Assim como iremos avaliar os estimadores para diferentes números de amostras, neste trabalho serão utilizados $n = 25,\ 50,\ 100$ e $200$.) Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros pelo método de máxima verossimilhança.
+
+## Método de Máxima Verossimilhança
+
+Seja $X$ uma variável aleatória que segue a distribuição Gompertz, a sua função de densidade de probabilidade é dada por
 
 $$ f(x;a,b) = be^{ax}exp[-b/a(e^{ax}-1)],\ x>0, $$
 em que $a > 0$ representa o parâmetro de forma e $b>0$ representa o parâmetro de escala. Sua distribuição acumulada é dada por
@@ -78,6 +82,8 @@ $$L(a,b;\bm{x}) = b^nexp\left(a\sum_{i=1}^nx_i\right) exp\left[-\frac{b}{a}\left
 logo, a função log-verossimilhança é da forma
 
 $$ l(a,b;\bm{x}) = n\ log (b) + a\sum_{i=1}^nx_i - \frac{b}{a}\left(\sum_{i=1}^ne^{ax_i}-n\right).$$
+O estimador de máxima verossimilhança é o valor $\theta$ que maximiza a função de verossimilhança $L(a,b;\bm{x})$. Em alguns casos, é mais fácil achar o $\theta$ que maximiza a função log-verossimilhança $l(a,b;\bm{x})$.
+
 O vetor escore $\bm{U}(a,b;\bm{x}) = (U_a(a,b;\bm{x}),\ U(a,b;\bm{x}))^\top$ são dadas respectivamente por
 
 \begin{align*}
@@ -128,12 +134,6 @@ IC[b;100(1-\alpha)\%] &= \left[\hat b - Z_{\alpha/2}\sqrt{\frac{A}{AC-B^2}};\hat
 \end{align*}
 
 em que $Z_q$ representa o quantil da distribuição normal padrão com probabilidade acumulada $q$.
-Falar sobre monte carlo e bootstrap.
-
-
-
-A estimação dos parâmetros é um dos pontos fundamentais para o ajuste de um modelo. E neste trabalho vamos mostrar dois métodos diferentes de estimação dos parâmetros, o método do estimador de máxima verossimilhança e o estimador por monte carlo corrigido por bootstrap. É importante ressaltar que vamos estimar dois pares de valores diferentes dos parâmetros a e b, primeiramente vamos estimar $a=2$ e $b=3$, e também vamos estimar $a=0.5$ e $b=0.5$. Assim como iremos avaliar os estimadores para diferentes números de amostras, neste trabalho serão utilizados $n = 25,\ 50,\ 100$ e $200$.) Utilizando os chutes iniciais para a e b, podemos obter as estimativas pontuais para os parâmetros pelo método de máxima verossimilhança.
-
 
 # Resultados
 
